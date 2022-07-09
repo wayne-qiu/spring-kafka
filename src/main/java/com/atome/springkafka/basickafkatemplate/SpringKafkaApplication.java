@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.TopicBuilder;
@@ -59,7 +58,6 @@ class Producer {
 }
 
 @Component
-@Profile(value={"stream"})
 class Consumer {
 	@KafkaListener(topics= {"hobbit"}, groupId="spring-boot-kafka")
 	public void consume(String quote) {
