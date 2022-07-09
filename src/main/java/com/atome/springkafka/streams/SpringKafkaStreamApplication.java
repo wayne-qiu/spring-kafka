@@ -17,6 +17,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,7 +35,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-@EnableKafkaStreams
+@EnableKafkaStreams  //<- enable kafka streams
 public class SpringKafkaStreamApplication {
 
     public static void main(String[] args) {
@@ -42,8 +43,16 @@ public class SpringKafkaStreamApplication {
     }
 
     @Bean
+    NewTopic hobbit() {
+        return TopicBuilder.name("hobbit")
+                .partitions(2)
+                .replicas(3)
+//				.config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
+                .build();
+    }
+    @Bean
     NewTopic counts() {
-        return TopicBuilder.name("streams-wordcount-output").partitions(6).replicas(3).build();
+        return TopicBuilder.name("streams-wordcount-output").partitions(2).replicas(3).build();
     }
 
 }
@@ -72,6 +81,7 @@ class Producer {
 
 
 @Component
+@Profile(value={"stream"})
 class Consumer {
 
     @KafkaListener(topics = {"streams-wordcount-output"}, groupId = "spring-boot-kafka")

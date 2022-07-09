@@ -20,15 +20,15 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-public class SpringCcloudAvroApplication {
+public class SpringCloudAvroApplication {
     
     public static void main(String[] args) {
-        SpringApplication.run(SpringCcloudAvroApplication.class, args);
+        SpringApplication.run(SpringCloudAvroApplication.class, args);
     }
 
     @Bean
     NewTopic hobbitAvro() {
-        return TopicBuilder.name("hobbit-avro").partitions(6).replicas(3).build();
+        return TopicBuilder.name("hobbit-avro").partitions(2).replicas(3).build();
     }
 
 }

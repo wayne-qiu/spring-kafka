@@ -1,12 +1,16 @@
-package com.atome.springkafka.kafkatemplate;
+package com.atome.springkafka.basickafkatemplate;
 
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -21,10 +25,14 @@ public class SpringKafkaApplication {
 		SpringApplication.run(SpringKafkaApplication.class, args);
 	}
 
-//	@Bean
-//	NewTopic hobbit2() {
-//		return TopicBuilder.name("hobbit2").partitions(15).replicas(3).build();
-//	}
+	@Bean
+	NewTopic hobbit() {
+		return TopicBuilder.name("hobbit")
+				.partitions(2)
+				.replicas(3)
+//				.config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
+				.build();
+	}
 }
 
 @RequiredArgsConstructor
@@ -35,19 +43,13 @@ class Producer {
 
 	Faker faker;
 
-
-
 	@EventListener(ApplicationStartedEvent.class)
 	public void generate() {
-
 
 		faker = Faker.instance();
 		final Flux<Long> interval = Flux.interval(Duration.ofMillis(1_000));
 
 		final Flux<String> quotes = Flux.fromStream(Stream.generate(() -> faker.hobbit().quote()));
-
-		Flux.zip(interval, quotes)
-				.map(it -> template.send("hobbit", faker.random().nextInt(42), it.getT2())).blockLast();
 
 		Flux.zip(interval, quotes)
 				.map(it -> template.send("hobbit", faker.random().nextInt(42), it.getT2()))
@@ -57,6 +59,7 @@ class Producer {
 }
 
 @Component
+@Profile(value={"stream"})
 class Consumer {
 	@KafkaListener(topics= {"hobbit"}, groupId="spring-boot-kafka")
 	public void consume(String quote) {
