@@ -81,7 +81,7 @@ class Producer {
 
 
 @Component
-@Profile(value={"stream"})
+// @Profile(value={"stream"})
 class Consumer {
 
     @KafkaListener(topics = {"streams-wordcount-output"}, groupId = "spring-boot-kafka")
