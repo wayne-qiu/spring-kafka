@@ -2,6 +2,8 @@ https://developer.confluent.io/learn-kafka/spring/process-messages-with-kafka-st
 
 https://github.com/confluentinc/demo-scene/tree/master/spring-kafka-ccloud-course/
 
+https://confluent.cloud/login
+
 https://www.baeldung.com/spring-boot-kafka-streams
 
 - basickafkatemplate  
