@@ -10,10 +10,10 @@ https://www.baeldung.com/spring-boot-kafka-streams
     application.properties
 - streams  
     - @EnableKafkaStreams
-    - @Component
-    @Profile(value={"stream"})
-    class Consumer {
+    - application.properties
+        - spring.profiles.active=stream
     - run directly
+        - localhost:8080/count/dragon  
     - https://www.baeldung.com/spring-boot-kafka-streams
 - avro
     - application.properties
