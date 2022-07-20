@@ -19,7 +19,11 @@ https://www.baeldung.com/spring-boot-kafka-streams
     - application.properties
         spring.profiles.active=avro
     - xxx.avsc
-      - generated code `Hobbit`
+      - generated code `Hobbit`  
+       ./gradlew build  
+       springBoot {  
+	        mainClass = "com.atome.springkafka.streams.SpringKafkaStreamApplication"  
+       }
       - ConsumerRecord<Integer, Hobbit>
     - https://www.confluent.io/blog/schema-registry-avro-in-spring-boot-application-tutorial/
 
